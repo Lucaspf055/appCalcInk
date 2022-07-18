@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCalcInk">
         <activity
-            android:name=".MainActivity"
+            android:name=".layout.form_add_wall"
+            android:exported="false" />
+        <activity
+            android:name=".layout.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

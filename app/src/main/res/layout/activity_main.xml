@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".layout.MainActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                     android:background="@drawable/bg_wall"
                     android:orientation="horizontal"
                     android:padding="12dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <RelativeLayout
                         android:id="@+id/wall1_header"
@@ -219,7 +219,7 @@
                     android:background="@drawable/bg_wall"
                     android:orientation="horizontal"
                     android:padding="12dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <RelativeLayout
                         android:id="@+id/wall2_header"
@@ -376,7 +376,7 @@
                     android:background="@drawable/bg_wall"
                     android:orientation="horizontal"
                     android:padding="12dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <RelativeLayout
                         android:id="@+id/wall3_header"
@@ -530,7 +530,7 @@
                     android:background="@drawable/bg_wall"
                     android:orientation="horizontal"
                     android:padding="12dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <RelativeLayout
                         android:id="@+id/wall4_header"
