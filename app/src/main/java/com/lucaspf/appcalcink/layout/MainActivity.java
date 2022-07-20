@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.lucaspf.appcalcink.R;
 import com.lucaspf.appcalcink.data.Data;
+import com.lucaspf.appcalcink.model.Wall;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private ViewHolder mViewHolder = new ViewHolder();
@@ -76,10 +79,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.button_add) {
-            this.mViewHolder.layout_empty.setVisibility(View.GONE);
-            this.mViewHolder.layout_room.setVisibility(View.VISIBLE);
-
-
             Intent intent = new Intent(this, form_add_wall.class);
             startActivityForResult(intent, 37);
         }
@@ -88,8 +87,97 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 37) {
+        this.mViewHolder.layout_empty.setVisibility(View.GONE);
+        this.mViewHolder.layout_room.setVisibility(View.VISIBLE);
 
+        if (requestCode == 37) {
+            if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "Ação cancelada", Toast.LENGTH_SHORT).show();
+            }
+            else if (resultCode == RESULT_OK) {
+                Gson gson = new Gson();
+
+                if (this.mData.getNumWalls().equals("0")) {
+                    String jsonWall = this.mData.getStoredString("Wall_0");
+
+                    Wall wall = gson.fromJson(jsonWall, Wall.class);
+
+                    Double altura = wall.getAltura();
+                    Double largura = wall.getLargura();
+                    int porta = wall.getPortas();
+                    int janelas = wall.getJanelas();
+
+                    this.mViewHolder.wall1_janelas.setText(String.valueOf(wall.getJanelas()));
+                    this.mViewHolder.wall1_portas.setText(String.valueOf(wall.getPortas()));
+                    this.mViewHolder.wall1_largura.setText(String.format("%.2f", wall.getLargura()));
+                    this.mViewHolder.wall1_altura.setText(String.format("%.2f", wall.getAltura()));
+
+
+                    this.mViewHolder.layout_wall1.setVisibility(View.VISIBLE);
+
+                    this.mData.setNumWall("1");
+                }
+                else if (this.mData.getNumWalls().equals("1")) {
+                    String jsonWall = this.mData.getStoredString("Wall_1");
+
+                    Wall wall = gson.fromJson(jsonWall, Wall.class);
+
+                    Double altura = wall.getAltura();
+                    Double largura = wall.getLargura();
+                    int porta = wall.getPortas();
+                    int janelas = wall.getJanelas();
+
+                    this.mViewHolder.wall2_janelas.setText(String.valueOf(wall.getJanelas()));
+                    this.mViewHolder.wall2_portas.setText(String.valueOf(wall.getPortas()));
+                    this.mViewHolder.wall2_largura.setText(String.format("%.2f", wall.getLargura()));
+                    this.mViewHolder.wall2_altura.setText(String.format("%.2f", wall.getAltura()));
+
+
+                    this.mViewHolder.layout_wall2.setVisibility(View.VISIBLE);
+                    this.mData.setNumWall("2");
+                }
+                else if (this.mData.getNumWalls().equals("2")) {
+                    String jsonWall = this.mData.getStoredString("Wall_2");
+
+                    Wall wall = gson.fromJson(jsonWall, Wall.class);
+
+                    Double altura = wall.getAltura();
+                    Double largura = wall.getLargura();
+                    int porta = wall.getPortas();
+                    int janelas = wall.getJanelas();
+
+                    this.mViewHolder.wall3_janelas.setText(String.valueOf(wall.getJanelas()));
+                    this.mViewHolder.wall3_portas.setText(String.valueOf(wall.getPortas()));
+                    this.mViewHolder.wall3_largura.setText(String.format("%.2f", wall.getLargura()));
+                    this.mViewHolder.wall3_altura.setText(String.format("%.2f", wall.getAltura()));
+
+
+                    this.mViewHolder.layout_wall3.setVisibility(View.VISIBLE);
+                    this.mData.setNumWall("3");
+                }
+                else if (this.mData.getNumWalls().equals("3")) {
+                    String jsonWall = this.mData.getStoredString("Wall_3");
+
+                    Wall wall = gson.fromJson(jsonWall, Wall.class);
+
+                    Double altura = wall.getAltura();
+                    Double largura = wall.getLargura();
+                    int porta = wall.getPortas();
+                    int janelas = wall.getJanelas();
+
+                    this.mViewHolder.wall4_janelas.setText(String.valueOf(wall.getJanelas()));
+                    this.mViewHolder.wall4_portas.setText(String.valueOf(wall.getPortas()));
+                    this.mViewHolder.wall4_largura.setText(String.format("%.2f", wall.getLargura()));
+                    this.mViewHolder.wall4_altura.setText(String.format("%.2f", wall.getAltura()));
+
+
+                    this.mViewHolder.layout_wall4.setVisibility(View.VISIBLE);
+
+                    this.mData.setNumWall("4");
+                }
+
+                Toast.makeText(this, "Parede adicionada", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

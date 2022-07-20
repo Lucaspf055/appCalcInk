@@ -8,7 +8,7 @@ public class Data {
     private SharedPreferences mSharedPreferences;
 
     public Data(Context mContext) {
-        this.mSharedPreferences = mContext.getSharedPreferences("NumberOfwall", Context.MODE_PRIVATE);
+        this.mSharedPreferences = mContext.getSharedPreferences("NumberOfWall", Context.MODE_PRIVATE);
     }
 
     public void storeString(String key, String value) {
@@ -20,10 +20,10 @@ public class Data {
     }
 
     public String getNumWalls() {
-        return this.getStoredString("NumberOfwall");
+        return this.getStoredString("NumberOfWall");
     }
     public void setNumWall(String value){
-        this.storeString("NumberOWall", value);
+        this.storeString("NumberOfWall", value);
     }
 
 }
