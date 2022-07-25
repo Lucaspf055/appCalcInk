@@ -47,20 +47,67 @@ public class form_add_wall extends AppCompatActivity implements View.OnClickList
             setResult(Activity.RESULT_CANCELED, intent);
 
             this.finish();
+        } else if (view.getId() == R.id.button_add_wall) {
+            checaParede();
         }
-        else if (view.getId() == R.id.button_add_wall) {
-            Intent intent = new Intent();
-            Gson gson = new Gson();
+    }
 
-            Wall wall = new Wall(Double.parseDouble(String.valueOf(this.mViewHolder.add_wall_altura.getText())), Double.parseDouble(String.valueOf(this.mViewHolder
-            .add_wall_altura.getText())), Integer.parseInt(String.valueOf(this.mViewHolder.add_wall_portas.getText())), Integer.parseInt(String.valueOf(this.mViewHolder.add_wall_janelas.getText())));
+    public void checaParede() {
+        Intent intent = new Intent();
+        Gson gson = new Gson();
 
-            String jsonWall = gson.toJson(wall);
+        Wall wall = new Wall(Double.parseDouble(String.valueOf(this.mViewHolder.add_wall_altura.getText())), Double.parseDouble(String.valueOf(this.mViewHolder
+                .add_wall_largura.getText())), Integer.parseInt(String.valueOf(this.mViewHolder.add_wall_portas.getText())), Integer.parseInt(String.valueOf(this.mViewHolder.add_wall_janelas.getText())));
 
-            this.data.storeString("Wall_" + data.getNumWalls(), jsonWall);
-            setResult(Activity.RESULT_OK, intent);
-            this.finish();
+        if (checaArea(wall.getAltura(), wall.getLargura())) {
+            if (checaProporcao(wall.getAltura(), wall.getLargura(), wall.getPortas(), wall.getJanelas())) {
+                if (checaAlturaMinima(wall.getAltura(), wall.getPortas())) {
+                    String jsonWall = gson.toJson(wall);
+
+                    this.data.storeString("Wall_" + data.getNumWalls(), jsonWall);
+                    setResult(Activity.RESULT_OK, intent);
+                    this.finish();
+                }
+                else {
+                    Toast.makeText(this, "A parede deve ter 30cm a cima da porta", Toast.LENGTH_LONG).show();
+                }
+            }
+            else {
+                Toast.makeText(this, "A área de portas e janelas deve ser de no máximo 50% da área da parede", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, "A parede deve ter entre 1 e 15 metros quadrados", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public Boolean checaArea(Double altura, Double largura) {
+        Double area = altura * largura;
+
+        if (area >= 1 && area <= 15) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public Boolean checaProporcao(Double altura, Double largura, int portas, int janelas) {
+
+        Double areaparede = altura * largura;
+        Double areaportas = 2.40 * portas;
+        Double areajanelas = 1.52 * janelas;
+
+        if ((areaportas + areajanelas) > (areaparede / 2)) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checaAlturaMinima(Double altura, int portas){
+        if ((portas >= 0 && ((altura - 0.3) >= 1.9)) || portas == 0) {
+            return true;
+        }
+        else return false;
+
     }
 
     private static class ViewHolder {

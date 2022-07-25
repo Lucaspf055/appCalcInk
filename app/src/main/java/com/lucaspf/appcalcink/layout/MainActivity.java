@@ -3,6 +3,7 @@ package com.lucaspf.appcalcink.layout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.Rating;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Buttons
         this.mViewHolder.button_add = findViewById(R.id.button_add);
+        this.mViewHolder.button_calc = findViewById(R.id.button_calc);
 
         // Layouts
         this.mViewHolder.layout_empty = findViewById(R.id.layout_empty);
@@ -74,6 +76,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         this.mViewHolder.button_add.setOnClickListener(this);
+        this.mViewHolder.button_calc.setOnClickListener(this);
+        this.mViewHolder.wall1_header.setOnClickListener(this);
+        this.mViewHolder.wall2_header.setOnClickListener(this);
+        this.mViewHolder.wall3_header.setOnClickListener(this);
+        this.mViewHolder.wall4_header.setOnClickListener(this);
     }
 
     @Override
@@ -81,7 +88,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.button_add) {
             Intent intent = new Intent(this, form_add_wall.class);
             startActivityForResult(intent, 37);
+        } else if (v.getId() == R.id.wall1_header) {
+            hideInfo();
+            showInfo(1);
+        } else if (v.getId() == R.id.wall2_header) {
+            hideInfo();
+            showInfo(2);
+        } else if (v.getId() == R.id.wall3_header) {
+            hideInfo();
+            showInfo(3);
+        } else if (v.getId() == R.id.wall4_header) {
+            hideInfo();
+            showInfo(4);
+        } else if (v.getId() == R.id.button_calc) {
+            Toast.makeText(this, "lalala", Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -93,8 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (requestCode == 37) {
             if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Ação cancelada", Toast.LENGTH_SHORT).show();
-            }
-            else if (resultCode == RESULT_OK) {
+            } else if (resultCode == RESULT_OK) {
                 Gson gson = new Gson();
 
                 if (this.mData.getNumWalls().equals("0")) {
@@ -116,8 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     this.mViewHolder.layout_wall1.setVisibility(View.VISIBLE);
 
                     this.mData.setNumWall("1");
-                }
-                else if (this.mData.getNumWalls().equals("1")) {
+                } else if (this.mData.getNumWalls().equals("1")) {
                     String jsonWall = this.mData.getStoredString("Wall_1");
 
                     Wall wall = gson.fromJson(jsonWall, Wall.class);
@@ -135,8 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     this.mViewHolder.layout_wall2.setVisibility(View.VISIBLE);
                     this.mData.setNumWall("2");
-                }
-                else if (this.mData.getNumWalls().equals("2")) {
+                } else if (this.mData.getNumWalls().equals("2")) {
                     String jsonWall = this.mData.getStoredString("Wall_2");
 
                     Wall wall = gson.fromJson(jsonWall, Wall.class);
@@ -154,8 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     this.mViewHolder.layout_wall3.setVisibility(View.VISIBLE);
                     this.mData.setNumWall("3");
-                }
-                else if (this.mData.getNumWalls().equals("3")) {
+                } else if (this.mData.getNumWalls().equals("3")) {
                     String jsonWall = this.mData.getStoredString("Wall_3");
 
                     Wall wall = gson.fromJson(jsonWall, Wall.class);
@@ -172,6 +191,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                     this.mViewHolder.layout_wall4.setVisibility(View.VISIBLE);
+                    this.mViewHolder.button_add.setVisibility(View.GONE);
+                    this.mViewHolder.button_calc.setVisibility(View.VISIBLE);
 
                     this.mData.setNumWall("4");
                 }
@@ -181,9 +202,66 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void showInfo(int number) {
+        if (number == 1)
+            this.mViewHolder.wall1_info.setVisibility(View.VISIBLE);
+        else if (number == 2)
+            this.mViewHolder.wall2_info.setVisibility(View.VISIBLE);
+        else if (number == 3)
+            this.mViewHolder.wall3_info.setVisibility(View.VISIBLE);
+        else this.mViewHolder.wall4_info.setVisibility(View.VISIBLE);
+    }
+
+    public Double calculaTintaNecessaria() {
+        Gson gson = new Gson();
+
+        String jsonWall1 = this.mData.getStoredString("Wall_1");
+        String jsonWall2 = this.mData.getStoredString("Wall_2");
+        String jsonWall3 = this.mData.getStoredString("Wall_3");
+        String jsonWall4 = this.mData.getStoredString("Wall_4");
+
+        Wall parede1 = gson.fromJson(jsonWall1, Wall.class);
+        Wall parede2 = gson.fromJson(jsonWall2, Wall.class);
+        Wall parede3 = gson.fromJson(jsonWall3, Wall.class);
+        Wall parede4 = gson.fromJson(jsonWall4, Wall.class);
+
+        Double area_parede_1 = parede1.getAltura() * parede1.getLargura();
+        Double area_parede_2 = parede1.getAltura() * parede2.getLargura();
+        Double area_parede_3 = parede1.getAltura() * parede3.getLargura();
+        Double area_parede_4 = parede1.getAltura() * parede4.getLargura();
+
+        Double areaTotal = area_parede_1 + area_parede_2 + area_parede_3 + area_parede_4;
+        Double tintaN = areaTotal / 5;
+
+        Double[] latas = {18.00, 3.60, 2.50, 0.50};
+        Integer[] latasN = {0, 0, 0, 0};
+        Integer i = 0;
+
+        while (i <= 3) {
+            if (tintaN >= latas[i]) {
+                tintaN = tintaN - latas[i];
+                latasN[i]++;
+            } else i++;
+        }
+        while (tintaN >= 0.01) {
+            tintaN = tintaN - latas[3];
+            latasN[3]++;
+        }
+        return 0.00;
+    }
+
+    public void hideInfo() {
+        this.mViewHolder.wall1_info.setVisibility(View.GONE);
+        this.mViewHolder.wall2_info.setVisibility(View.GONE);
+        this.mViewHolder.wall3_info.setVisibility(View.GONE);
+        this.mViewHolder.wall4_info.setVisibility(View.GONE);
+    }
+
+
     public static class ViewHolder {
         // botoes
         Button button_add;
+        Button button_calc;
 
         //empyt
         RelativeLayout layout_empty;
